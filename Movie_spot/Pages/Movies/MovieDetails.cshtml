@@ -1,0 +1,76 @@
+﻿@page "{id:int}"
+@model Movie_spot.Pages.Movies.DetailsModel
+@{
+    ViewData["Title"] = "Movie Details";
+}
+
+<div class="container">
+    <h1 class="my-4">@Model.Movie.Title</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            @if (Model.Movie.Images != null && Model.Movie.Images.Any())
+            {
+                <img src="/images/@Model.Movie.Images.First().ImagePath" class="img-fluid rounded" alt="@Model.Movie.Title">
+            }
+            else
+            {
+                <img src="/images/placeholder.jpg" class="img-fluid rounded" alt="No image available">
+            }
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5 class="text-muted">Director</h5>
+                        <p>@(string.IsNullOrEmpty(Model.Movie.Director) ? "Not specified" : Model.Movie.Director)</p>
+                    </div>
+                    <div class="mb-3">
+                        <h5 class="text-muted">Artists</h5>
+                        <p>@(string.IsNullOrEmpty(Model.Movie.Artists) ? "Not specified" : Model.Movie.Artists)</p>
+                    </div>
+                    <div class="mb-3">
+                        <h5 class="text-muted">Genre</h5>
+                        <p>@(string.IsNullOrEmpty(Model.Movie.Genre) ? "Not specified" : Model.Movie.Genre)</p>
+                    </div>
+                    <div class="mb-3">
+                        <h5 class="text-muted">Release Year</h5>
+                        <p>@Model.Movie.ReleaseYear</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Reviews</h2>
+    @if (Model.Movie.Reviews != null && Model.Movie.Reviews.Any())
+    {
+        <div class="row">
+            @foreach (var review in Model.Movie.Reviews)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Rating: @review.Rating/5</h5>
+                            <p class="card-text">@review.Comment</p>
+                            <div class="text-muted">
+                                <small>@review.AgeRange | @review.Gender | @review.Country</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No reviews available for this movie yet.
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-page="./Index" class="btn btn-secondary">Back to Movies</a>
+        <a asp-page="./Edit" asp-route-id="@Model.Movie.Id" class="btn btn-primary">Edit</a>
+    </div>
+</div>

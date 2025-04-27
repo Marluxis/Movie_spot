@@ -1,0 +1,109 @@
+﻿@page
+@model Movie_spot.Pages.Statistics.IndexModel
+@{
+    ViewData["Title"] = "Movie Statistics";
+}
+
+<div class="container">
+    <h1 class="mb-4">Movie Statistics</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Movies by Genre</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Genre</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var genre in Model.GenreDistribution)
+                            {
+                                <tr>
+                                    <td>@(string.IsNullOrEmpty(genre.Key) ? "Not Specified" : genre.Key)</td>
+                                    <td>@genre.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Movies by Release Year</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var year in Model.YearDistribution.OrderByDescending(y => y.Key))
+                            {
+                                <tr>
+                                    <td>@year.Key</td>
+                                    <td>@year.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Top Rated Movies</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Movie</th>
+                                <th>Average Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var movie in Model.TopRatedMovies)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-page="/Movies/Details" asp-route-id="@movie.Id">@movie.Title</a>
+                                    </td>
+                                    <td>@movie.AverageRating.ToString("0.0")/5</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Overall Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Average Rating: </strong> @Model.AverageRating.ToString("0.0")/5</p>
+                    <p><strong>Total Movies: </strong> @(Model.GenreDistribution.Values.Sum())</p>
+                    <p><strong>Total Reviews: </strong> @(Model.TopRatedMovies.Count() > 0 ? "Available" : "No Reviews Yet")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

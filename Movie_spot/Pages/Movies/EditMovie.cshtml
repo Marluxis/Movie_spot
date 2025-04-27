@@ -1,0 +1,83 @@
+﻿@page "{id:int}"
+@model Movie_spot.Pages.Movies.EditModel
+@{
+    ViewData["Title"] = "Edit Movie";
+}
+
+<div class="container">
+    <h1>Edit Movie</h1>
+    
+    <form method="post" enctype="multipart/form-data" class="mt-4">
+        <input type="hidden" asp-for="Movie.Id" />
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <label asp-for="Movie.Title" class="form-label">Title</label>
+                    <input asp-for="Movie.Title" class="form-control" />
+                    <span asp-validation-for="Movie.Title" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Movie.Director" class="form-label">Director</label>
+                    <input asp-for="Movie.Director" class="form-control" />
+                    <span asp-validation-for="Movie.Director" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Movie.Artists" class="form-label">Artists</label>
+                    <input asp-for="Movie.Artists" class="form-control" />
+                    <span asp-validation-for="Movie.Artists" class="text-danger"></span>
+                    <small class="form-text text-muted">Enter the main actors separated by commas.</small>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Movie.Genre" class="form-label">Genre</label>
+                            <input asp-for="Movie.Genre" class="form-control" />
+                            <span asp-validation-for="Movie.Genre" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Movie.ReleaseYear" class="form-label">Release Year</label>
+                            <input asp-for="Movie.ReleaseYear" type="number" min="1900" max="@DateTime.Now.Year" class="form-control" />
+                            <span asp-validation-for="Movie.ReleaseYear" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                @if (Model.Movie.Images != null && Model.Movie.Images.Any())
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Current Images</label>
+                        <div class="row">
+                            @foreach (var image in Model.Movie.Images)
+                            {
+                                <div class="col-md-3 mb-2">
+                                    <img src="/images/@image.ImagePath" class="img-thumbnail" alt="Movie image" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                
+                <div class="mb-3">
+                    <label asp-for="ImageFiles" class="form-label">Add New Images</label>
+                    <input asp-for="ImageFiles" type="file" multiple class="form-control" />
+                    <small class="form-text text-muted">You can select multiple images to add to the existing ones.</small>
+                </div>
+                
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Update Movie</button>
+                    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
